@@ -5,13 +5,18 @@ const bot = new Telegraf(process.env.BOT_TOKEN);
 
 bot.start(ctx => ctx.reply('Добавь меня в чат и имитируй Козулю'));
 
-const COMMAND = '/send@vkozulya_bot';
+const COMMAND = '/send@sneaker_releases_test_bot';
+// const COMMAND = '/send@vkozulya_bot';
 
-bot.on('message', ({message, reply}) => {
+bot.on('message', async ({message, reply, telegram}) => {
 	console.log(JSON.stringify(message));
 
 	if (message.text && message.text.indexOf(COMMAND) === 0) {
-		reply(message.text.slice(COMMAND.length).trim() || 'Ух бля');
+		await reply(message.text.slice(COMMAND.length).trim() || 'Ух бля');
+
+		setTimeout(() => {
+			telegram.deleteMessage(message.chat.id, message.message_id).then(console.log, () => null);
+		}, 100);
 	}
 });
 
